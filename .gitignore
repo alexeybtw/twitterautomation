@@ -1,4 +1,4 @@
 **/.settings
 **/target
 **/.recommenders
-**/.test-output
+**/test-output

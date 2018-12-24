@@ -34,7 +34,7 @@ public class BasePage {
 		this.waitVisibility(webElement);
 		return webElement.getText();
 	}
-	
+
 	public String getPageTitle() {
 		return this.driver.getTitle();
 	}

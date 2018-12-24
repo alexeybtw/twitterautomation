@@ -7,13 +7,15 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 
+import com.my.sandbox.utils.ResourceHelper;
+
 public class BaseTest {
 	protected WebDriver driver;
 	private final int IMPLICIT_WAIT_MS = 10000;
 
 	@BeforeClass
 	public void setUp() {
-		String chromeDriverPath = BaseTest.class.getResource("/WebDrivers/chromedriver.exe").getPath();
+		String chromeDriverPath = ResourceHelper.getResource("/WebDrivers/chromedriver.exe").getPath();
 		System.setProperty("webdriver.chrome.driver", chromeDriverPath);
 
 		driver = new ChromeDriver();
