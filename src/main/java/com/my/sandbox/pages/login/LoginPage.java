@@ -1,13 +1,16 @@
 package com.my.sandbox.pages.login;
 
+import org.apache.poi.ss.formula.eval.NotImplementedException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import com.my.sandbox.models.login.User;
 import com.my.sandbox.pages.BasePage;
 import com.my.sandbox.pages.user.MyFeedPage;
+import com.my.sandbox.utils.login.TwitterLanguage;
 
 public class LoginPage extends BasePage {
 	@FindBy(xpath = "//div[@class = 'clearfix field']/input[@type = 'text']")
@@ -22,6 +25,18 @@ public class LoginPage extends BasePage {
 	@CacheLookup
 	private WebElement btnLogin;
 
+	@FindBy(xpath = "//span[@class = 'message-text']")
+	@CacheLookup
+	private WebElement lblLoginFailed;
+
+	@FindBy(className = "js-current-language")
+	@CacheLookup
+	private WebElement drpboxCurrentLang;
+
+	@FindBy(xpath = "//a[@data-lang-code='en']")
+	@CacheLookup
+	private WebElement lnkEngLang;
+
 	public LoginPage(WebDriver driver) {
 		super(driver);
 	}
@@ -35,14 +50,48 @@ public class LoginPage extends BasePage {
 	}
 
 	public void clickLogin() {
-		this.click(btnLogin);
+		this.click(this.btnLogin);
 	}
 
-	public MyFeedPage loginTwitter(String userName, String password) {
-		this.enterUserName(userName);
-		this.enterPassword(password);
+	public MyFeedPage loginTwitter(User user, TwitterLanguage twitterLang) {
+		this.changeLanguage(twitterLang);
+		
+		this.enterUserName(user.getUsername());
+		this.enterPassword(user.getPassword());
 		this.clickLogin();
 
 		return PageFactory.initElements(this.driver, MyFeedPage.class);
+	}
+
+	public LoginPage invalidLogin(User user, TwitterLanguage twitterLang) {
+		this.changeLanguage(twitterLang);
+		
+		this.enterUserName(user.getUsername());
+		this.enterPassword(user.getPassword());
+		this.clickLogin();
+
+		return this;
+	}
+
+	public String getFailedLoginMessage() {
+		return this.readText(this.lblLoginFailed);
+	}
+
+	public String getCurrentLang() {
+		return this.readText(this.drpboxCurrentLang);
+	}
+	
+	public void changeLanguage(TwitterLanguage twitterLang) {
+		if (!this.getCurrentLang().equals(twitterLang.getLanguage())) {
+			this.click(this.drpboxCurrentLang);
+			
+			switch (twitterLang) {
+			case ENGLISH:
+				this.click(this.lnkEngLang);
+				break;
+			default:
+				throw new NotImplementedException(String.format("Language [%s] is not supported for selection", twitterLang.getLanguage()));
+			}
+		}
 	}
 }

@@ -8,7 +8,6 @@ import org.openqa.selenium.support.PageFactory;
 
 import com.my.sandbox.pages.BasePage;
 import com.my.sandbox.pages.login.TwitterHomePage;
-import com.my.sandbox.pages.login.UserSettingsMenuPage;
 
 public class MyFeedPage extends BasePage {
 
@@ -20,6 +19,10 @@ public class MyFeedPage extends BasePage {
 	@CacheLookup
 	WebElement btnSettings;
 
+	@FindBy(xpath = "//button[text()='Log out']")
+	@CacheLookup
+	WebElement btnLogout;
+
 	public MyFeedPage(WebDriver driver) {
 		super(driver);
 	}
@@ -28,13 +31,10 @@ public class MyFeedPage extends BasePage {
 		return this.readText(this.lnkUserName);
 	}
 
-	public UserSettingsMenuPage clickUserSettings() {
+	public TwitterHomePage logoutTwitter() {
 		this.click(this.btnSettings);
-		return PageFactory.initElements(this.driver, UserSettingsMenuPage.class);
-	}
 
-	public TwitterHomePage clickLogout() {
-		UserSettingsMenuPage pageUserSettings = this.clickUserSettings();
-		return pageUserSettings.logoutTwitter();
+		this.btnLogout.click();
+		return PageFactory.initElements(this.driver, TwitterHomePage.class);
 	}
 }
