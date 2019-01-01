@@ -7,12 +7,10 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.my.sandbox.pages.BasePage;
+import com.my.sandbox.utils.Consts;
 
 public class TwitterHomePage extends BasePage {
-
-	private final String HOME_PAGE_URL = "https://twitter.com/";
-	private final String LOGIN_PAGE_URL = "https://twitter.com/login";
-
+	
 	@FindBy(xpath = "//div[@class = 'StaticLoggedOutHomePage-buttons']/a[@href='/login']")
 	@CacheLookup
 	WebElement btnLogin;
@@ -23,16 +21,15 @@ public class TwitterHomePage extends BasePage {
 
 	public TwitterHomePage(WebDriver driver) {
 		super(driver);
-		PageFactory.initElements(this.driver, this);
 	}
 
 	public TwitterHomePage openTwitter() {
-		this.driver.navigate().to(HOME_PAGE_URL);
-		return this;
+		this.driver.navigate().to(Consts.HOME_PAGE_URL);
+		return PageFactory.initElements(this.driver, TwitterHomePage.class);
 	}
 
 	public LoginPage openLoginPage() {
-		this.driver.navigate().to(LOGIN_PAGE_URL);
+		this.driver.navigate().to(Consts.LOGIN_PAGE_URL);
 		return PageFactory.initElements(this.driver, LoginPage.class);
 	}
 

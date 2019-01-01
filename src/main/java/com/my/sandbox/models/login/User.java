@@ -2,9 +2,10 @@ package com.my.sandbox.models.login;
 
 import java.util.List;
 
+import com.my.sandbox.models.BaseModel;
 import com.poiji.annotation.ExcelCellName;
 
-public class User {
+public class User extends BaseModel {
 
 	@ExcelCellName("Username")
 	private String username;
@@ -37,6 +38,15 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [username=" + username + ", password=" + password + ", isValid=" + isValid + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", isValid=" + isValid + "]";
+	}
+	
+	@Override
+	public User clone() {
+		try {
+			return (User)super.clone();
+		} catch (CloneNotSupportedException ex) {
+			throw new InternalError();
+		}
 	}
 }

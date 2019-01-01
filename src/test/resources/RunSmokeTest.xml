@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="Twitter Smoke Test Suite" parallel="false" preserve-order="true" verbose="10">
+	<test name="Login Test">
+		<classes>
+			<class name="com.my.sandbox.tests.login.LoginTest" />
+		</classes>
+	</test>
+
+	<test name="Publish Valid Tweet">
+		<classes>
+			<class name="com.my.sandbox.tests.login.LoginTest">
+				<methods>
+					<include name="validLoginTest" />
+				</methods>
+			</class>
+
+			<class name="com.my.sandbox.tests.tweets.TweetsTest" />
+		</classes>
+	</test>
+</suite>

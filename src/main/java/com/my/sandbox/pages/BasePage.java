@@ -16,8 +16,12 @@ public class BasePage {
 		this.wait = new WebDriverWait(this.driver, WEBDRIVER_WAIT_SEC);
 	}
 
-	private void waitVisibility(WebElement webElement) {
+	public void waitVisibility(WebElement webElement) {
 		this.wait.until(ExpectedConditions.visibilityOf(webElement));
+	}
+
+	public void waitInvisibility(WebElement webElement) {
+		this.wait.until(ExpectedConditions.invisibilityOf(webElement));
 	}
 
 	public void click(WebElement webElement) {
@@ -35,7 +39,22 @@ public class BasePage {
 		return webElement.getText();
 	}
 
+	public boolean isEnabled(WebElement webElement) {
+		this.waitVisibility(webElement);
+		return webElement.isEnabled();
+	}
+
+	@SuppressWarnings("unchecked")
+	public <TPage extends BasePage> TPage refreshPage() {
+		this.driver.navigate().refresh();
+		return (TPage) this;
+	}
+
 	public String getPageTitle() {
 		return this.driver.getTitle();
+	}
+	
+	public void navigateToPage(String pageAddress) {
+		this.driver.navigate().to(pageAddress);
 	}
 }
