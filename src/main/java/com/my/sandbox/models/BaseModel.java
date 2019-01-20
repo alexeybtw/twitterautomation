@@ -1,7 +1,6 @@
 package com.my.sandbox.models;
 
 import java.util.List;
-
 import com.poiji.annotation.ExcelCellName;
 
 public class BaseModel implements Cloneable {
@@ -24,5 +23,14 @@ public class BaseModel implements Cloneable {
 
 	public void setId(long id) {
 		this.id = id;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <TModel extends BaseModel> TModel cloneModel() {
+		try {
+			return (TModel)super.clone();
+		} catch (CloneNotSupportedException ex) {
+			throw new InternalError();
+		}
 	}
 }

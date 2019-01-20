@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
 import com.my.sandbox.models.tweet.Tweet;
@@ -21,22 +20,18 @@ public class ComposeNewTweetPage extends BasePage {
 	@CacheLookup
 	private WebElement txtNewTweet;
 
+	private final String SEND_TWEET = Keys.chord(Keys.CONTROL, Keys.ENTER);
+
 	public ComposeNewTweetPage(WebDriver driver) {
 		super(driver);
 	}
 
-	public ComposeNewTweetPage enterTweetText(String tweetText) {
-		this.writeText(this.txtNewTweet, tweetText);
-		return this;
-	}
-
 	public TweetSentPage sendValidTweet(Tweet tweet) {
-		this.enterTweetText(tweet.getTweetText());
+		this.writeText(this.txtNewTweet, tweet.getTweetText());
 		this.wait.until(ExpectedConditions.textToBePresentInElement(this.txtNewTweet, tweet.getTweetText()));
 
-		final String SEND_TWEET = Keys.chord(Keys.CONTROL, Keys.ENTER);
-		this.enterTweetText(SEND_TWEET);
+		this.writeText(this.txtNewTweet, SEND_TWEET);
 
-		return PageFactory.initElements(this.driver, TweetSentPage.class);
+		return new TweetSentPage(driver);
 	}
 }

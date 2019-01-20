@@ -4,7 +4,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import com.my.sandbox.models.tweet.Tweet;
 import com.my.sandbox.pages.BasePage;
@@ -36,7 +35,7 @@ public class TopNavigationPage extends BasePage {
 
 	public ComposeNewTweetPage clickNewTweet() {
 		this.click(this.btnNewTweet);
-		return PageFactory.initElements(this.driver, ComposeNewTweetPage.class);
+		return new ComposeNewTweetPage(driver);
 	}
 	
 	public TweetSentPage publishValidTweet(Tweet tweet) {
@@ -48,6 +47,6 @@ public class TopNavigationPage extends BasePage {
 		this.click(this.btnSettings);
 
 		this.click(this.btnLogout);
-		return PageFactory.initElements(this.driver, TwitterHomePage.class);
+		return new TwitterHomePage(driver);
 	}
 }

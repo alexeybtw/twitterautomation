@@ -1,5 +1,7 @@
 package com.my.sandbox.tests;
 
+import java.util.List;
+
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterTest;
@@ -23,6 +25,13 @@ public class BaseTest {
 
 	protected <T extends BaseModel> void checkValidModel(T model, String invalidMessage) {
 		if (model == null)
+			Assert.fail(invalidMessage);
+	}
+
+	protected <T extends BaseModel> void checkValidModel(List<T> lstModels, String invalidMessage) {
+		if (lstModels == null)
+			Assert.fail(invalidMessage);
+		else if (lstModels.size() == 0)
 			Assert.fail(invalidMessage);
 	}
 }

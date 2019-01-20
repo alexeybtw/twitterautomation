@@ -6,8 +6,8 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
+import org.openqa.selenium.support.FindAll;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import com.my.sandbox.pages.tweets.DeleteTweetConfirmationPage;
 import com.my.sandbox.pages.tweets.TweetDeletedPage;
@@ -19,11 +19,12 @@ public class MyHomePage extends TopNavigationPage {
 	@CacheLookup
 	private WebElement lnkUserName;
 
-	@FindBy(xpath = "//div[@data-tweet-id]/div[@class = 'content']")
+	@FindAll({
+		@FindBy(xpath = "//div[@data-tweet-id]/div[@class = 'content']")
+	})
 	private List<WebElement> lstMyTweetsElements;
 
 	@FindBy(xpath = "//li[@class = 'js-actionDelete']/button")
-	@CacheLookup
 	private WebElement btnDeleteTweet;
 
 	public MyHomePage(WebDriver driver) {
@@ -38,7 +39,7 @@ public class MyHomePage extends TopNavigationPage {
 		this.navigateToPage(String.format("%s%s", Consts.HOME_PAGE_URL, username));
 		return this;
 	}
-	
+
 	private WebElement getElemTweetText(WebElement parentElem) {
 		return parentElem.findElement(By.xpath("//div[@class = 'js-tweet-text-container']/p"));
 	}
@@ -53,13 +54,17 @@ public class MyHomePage extends TopNavigationPage {
 	}
 
 	public String getLastTweetText() {
-		WebElement elemTweet = this.lstMyTweetsElements.get(this.lstMyTweetsElements.size() - 1);
-		return this.readText(this.getElemTweetText(elemTweet));
+		try {
+			WebElement elemTweet = this.lstMyTweetsElements.get(this.lstMyTweetsElements.size() - 1);
+			return this.readText(this.getElemTweetText(elemTweet));
+		} catch (IndexOutOfBoundsException ex) {
+			return "";
+		}
 	}
 
 	private DeleteTweetConfirmationPage clickDelete() {
 		this.click(this.btnDeleteTweet);
-		return PageFactory.initElements(this.driver, DeleteTweetConfirmationPage.class);
+		return new DeleteTweetConfirmationPage(driver);
 	}
 
 	public TweetDeletedPage deleteTweet(int indxTweet) {
@@ -76,16 +81,15 @@ public class MyHomePage extends TopNavigationPage {
 
 		DeleteTweetConfirmationPage pageDeleteTweet = this.clickDelete();
 		return pageDeleteTweet.confirmDeleteTweet();
-
 	}
-
-	public boolean verifyTweetExists(String actTweetText) {
+	
+	public int getTweetIndex(String actTweetText) {		
 		for (int i = 0; i < this.lstMyTweetsElements.size(); i++) {
 			String expTweetText = this.getTweetText(i);
-
+			
 			if (expTweetText.equals(actTweetText))
-				return true;
+				return i;
 		}
-		return false;
+		return -1;
 	}
 }

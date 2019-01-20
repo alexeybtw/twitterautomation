@@ -5,7 +5,6 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.CacheLookup;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
 import com.my.sandbox.models.login.User;
 import com.my.sandbox.pages.BasePage;
@@ -60,7 +59,7 @@ public class LoginPage extends BasePage {
 		this.enterPassword(user.getPassword());
 		this.clickLogin();
 
-		return PageFactory.initElements(this.driver, MyFeedPage.class);
+		return new MyFeedPage(driver);
 	}
 
 	public LoginPage invalidLogin(User user, TwitterLanguage twitterLang) {

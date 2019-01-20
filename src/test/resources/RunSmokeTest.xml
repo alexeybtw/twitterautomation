@@ -8,7 +8,7 @@
 		</classes>
 	</test>
 
-	<test name="Publish Valid Tweet">
+<!-- 	<test name="Publish Valid Tweet">
 		<classes>
 			<class name="com.my.sandbox.tests.login.LoginTest">
 				<methods>
@@ -18,5 +18,5 @@
 
 			<class name="com.my.sandbox.tests.tweets.TweetsTest" />
 		</classes>
-	</test>
+	</test> -->
 </suite>

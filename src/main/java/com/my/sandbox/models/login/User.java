@@ -1,5 +1,6 @@
 package com.my.sandbox.models.login;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.my.sandbox.models.BaseModel;
@@ -16,6 +17,9 @@ public class User extends BaseModel {
 	@ExcelCellName("IsValid")
 	private boolean isValid;
 
+	@ExcelCellName("Description")
+	private String description;
+
 	public String getUsername() {
 		return username;
 	}
@@ -28,25 +32,23 @@ public class User extends BaseModel {
 		return isValid;
 	}
 
-	public static User getUserByValidity(List<User> lstUsers, boolean isValid) {
+	public String getDescription() {
+		return description;
+	}
+
+	public static List<User> getUsersByValidity(List<User> lstUsers, boolean isValid) {
+		List<User> lstFilteredUsers = new ArrayList<User>();
+
 		for (User user : lstUsers)
 			if (user.isValid() == isValid)
-				return user;
+				lstFilteredUsers.add(user);
 
-		return null;
+		return lstFilteredUsers;
 	}
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", password=" + password + ", isValid=" + isValid + "]";
-	}
-	
-	@Override
-	public User clone() {
-		try {
-			return (User)super.clone();
-		} catch (CloneNotSupportedException ex) {
-			throw new InternalError();
-		}
+		return "User [username=" + username + ", password=" + password + ", isValid=" + isValid + ", description="
+				+ description + "]";
 	}
 }

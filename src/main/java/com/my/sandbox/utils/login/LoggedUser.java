@@ -11,7 +11,7 @@ public class LoggedUser {
 
 	public static void setLoggedUser(User user) {
 		if (loggedUser == null && user instanceof User)
-			loggedUser = user.clone();
+			loggedUser = user.cloneModel();
 	}
 
 	public static User getLoggedUser() {
